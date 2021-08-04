@@ -6,6 +6,7 @@ import {
 } from '@vtex/api'
 
 import { getAllWorkspaces } from './middlewares/getAllWorkspaces'
+import { deleteOneWorkspace } from './middlewares/deleteOneWorkspace'
 
 // import { IOClients } from '@vtex/api'
 import { Clients } from './clients'
@@ -28,6 +29,9 @@ export default new Service<Clients, State, ParamsContext>({
   routes: {
     workspaces: method({
       GET:[getAllWorkspaces]
+    }),
+    wsdelete: method({
+      DELETE:[deleteOneWorkspace]
     })
   }
 })

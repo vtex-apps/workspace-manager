@@ -5,7 +5,7 @@ export async function getAllWorkspaces(ctx: Context, next: () => Promise<any>) {
 
   // console.info('Received userId:', userId)
   console.log('llego al middleware');
-  const allWorkspaces = await workspaceClient.getAll()
+  const allWorkspaces = await workspaceClient.getWorkspaces()
 
   // console.info('allWorkspaces:', allWorkspaces);
 

@@ -40,7 +40,7 @@ const WorkspaceManager: FC = () => {
       }
     >
       <PageBlock variation="full">
-        <UsersTable items={workspaces}/>
+        <UsersTable items={workspaces} deleteCallback={getWorkspaces}/>
       </PageBlock>
     </Layout>
   )
