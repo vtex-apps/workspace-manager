@@ -8,7 +8,7 @@ import './styles.global.css'
 
 interface Workspace{
   name: string,
-  production: string
+  production: boolean
 }
 
 const WorkspaceManager: FC = () => {
@@ -23,7 +23,7 @@ const WorkspaceManager: FC = () => {
       })
       .then(response => response.json())
       .then(json => {
-        console.log(json);
+        setWorkspaces(json);
       })
   }
 
@@ -44,10 +44,9 @@ const WorkspaceManager: FC = () => {
         {
           workspaces.length > 0 &&
             workspaces.map(work  => (
-              <>
-                <span>{work.name}</span>
-                <span>{work.production}</span>
-              </>
+              <div>
+                <span>{work.name}</span> | <span>{`${work.production ? 'Producción' : 'Desarrollo'}`}</span>
+              </div>
             ))
         }
       </PageBlock>
