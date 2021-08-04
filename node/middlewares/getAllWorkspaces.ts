@@ -1,6 +1,6 @@
 export async function getAllWorkspaces(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { workspace: workspace },
+    clients: { workspace: workspaceClient },
   } = ctx
 
   // console.info('Received userId:', userId)

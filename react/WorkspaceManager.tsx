@@ -40,15 +40,7 @@ const WorkspaceManager: FC = () => {
       }
     >
       <PageBlock variation="full">
-        <UsersTable />
-        {
-          workspaces.length > 0 &&
-            workspaces.map(work  => (
-              <div>
-                <span>{work.name}</span> | <span>{`${work.production ? 'Producción' : 'Desarrollo'}`}</span>
-              </div>
-            ))
-        }
+        <UsersTable items={workspaces}/>
       </PageBlock>
     </Layout>
   )
