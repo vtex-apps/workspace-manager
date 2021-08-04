@@ -298,3 +298,5 @@ export default class UsersTable extends Component {
     )
   }
 }
+
+export default WorkspaceAdmin;

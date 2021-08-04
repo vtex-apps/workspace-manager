@@ -28,7 +28,7 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "{{account}}.vtexpayments.com.br",
+        "host": "platform.io.vtex.com",
         "path": "/*"
       }
     },
@@ -48,5 +48,6 @@
     "availableCountries": [
       "*"
     ]
-  }
+  },
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
