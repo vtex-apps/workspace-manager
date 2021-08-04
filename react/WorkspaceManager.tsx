@@ -23,7 +23,7 @@ const WorkspaceManager: FC = () => {
       })
       .then(response => response.json())
       .then(json => {
-        setWorkspaces(json)
+        console.log(json);
       })
   }
 

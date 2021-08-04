@@ -1,13 +1,13 @@
 export async function getAllWorkspaces(ctx: Context, next: () => Promise<any>) {
   const {
-    clients: { workspaces: workspacesClient },
+    clients: { workspace: workspaceClient },
   } = ctx
 
   // console.info('Received userId:', userId)
   console.log('llego al middleware');
-  const allWorkspaces = await workspacesClient.getAvtll()
+  const allWorkspaces = await workspaceClient.getAll()
 
-  console.info('allWorkspaces:', allWorkspaces);
+  // console.info('allWorkspaces:', allWorkspaces);
 
   // const {
   //   headers,
