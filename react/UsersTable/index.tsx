@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Table,
-  Tag
+  Tag,
+  Alert
 } from 'vtex.styleguide'
 import faker from 'faker'
 
@@ -14,6 +15,7 @@ export interface items {
 
 // @ts-ignore
 const WorkspaceAdmin = ({items, deleteCallback}) => {
+  const [workspaceToDelete, setWorkspaceToDelete] = useState<String>('')
 
   const defaultSchema = {
     properties: {
@@ -29,6 +31,9 @@ const WorkspaceAdmin = ({items, deleteCallback}) => {
             </Tag>
           )
         },
+      },
+      weight: {
+        title: 'Weight'
       }
     },
   }
@@ -43,10 +48,10 @@ const WorkspaceAdmin = ({items, deleteCallback}) => {
       onClick: ({ rowData }: RowHeader) => alert(`Executed action for ${rowData.name}`),
     },
     {
-      label: ({ rowData }: RowHeader) => `DANGEROUS action for ${rowData.name}`,
+      label: ({ rowData }: RowHeader) => `Borrar workspace ${rowData.name}`,
       isDangerous: true,
       onClick: ({ rowData }: RowHeader) =>
-        deleteWorkspace(rowData.name),
+        setWorkspaceToDelete(rowData.name)
     },
   ]
 
@@ -60,12 +65,22 @@ const WorkspaceAdmin = ({items, deleteCallback}) => {
       .then(response => response.json())
       .then(json => {
         console.log('delete callback')
-        deleteCallback()
+        setWorkspaceToDelete('')
+        setTimeout(() => deleteCallback(),1500)
       })
   }
 
   return (
     <div>
+      {
+        workspaceToDelete &&
+        <Alert
+          type="error"
+          action={{ label: 'Borrar', onClick: () => deleteWorkspace(workspaceToDelete) }}
+          onClose={() => setWorkspaceToDelete('')}>
+          You are about to delete workspace {workspaceToDelete}.
+        </Alert>
+      }
       <div className="mb5">
         <Table
           fullWidth

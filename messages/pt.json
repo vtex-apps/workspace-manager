@@ -1,4 +1,5 @@
 {
   "admin.app.wsmanager.title": "Workspace Manager",
+  "admin.app.wsmanager.subtitle": "Todas as ações realizadas não podem ser desfeitas, use esta ferramenta com responsabilidade.",
   "admin-wsmanager.navigation.label": "Workspace Manager"
 }

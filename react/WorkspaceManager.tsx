@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Layout, PageBlock, PageHeader } from 'vtex.styleguide'
+import { Layout, PageBlock, PageHeader, FloatingActionBar } from 'vtex.styleguide'
 
 import UsersTable from './UsersTable'
 
@@ -14,6 +14,7 @@ interface Workspace{
 const WorkspaceManager: FC = () => {
 
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const getWorkspaces = () => {
     console.log('voy a fetchear');
@@ -39,7 +40,10 @@ const WorkspaceManager: FC = () => {
         />
       }
     >
-      <PageBlock variation="full">
+      <PageBlock
+        variation="full"
+      subtitle={<FormattedMessage id="admin.app.wsmanager.subtitle" />}
+      >
         <UsersTable items={workspaces} deleteCallback={getWorkspaces}/>
       </PageBlock>
     </Layout>

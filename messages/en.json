@@ -1,5 +1,6 @@
 {
   "admin.app.wsmanager.title": "Workspace Manager",
+  "admin.app.wsmanager.subtitle": "All performed actions can't be undone, use this tool with responsability.",
   "admin-wsmanager.navigation.label": "Workspace Manager"
 
 }
