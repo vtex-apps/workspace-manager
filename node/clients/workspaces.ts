@@ -26,4 +26,17 @@ export default class Workspaces extends ExternalClient {
     })
     return res
   }
+
+  public async createOne(name : String | String[], isProduction: Boolean) {
+    const payload = {
+      name,
+      production: isProduction
+    }
+    const res = await this.http.post( `/${this.context.account}`,payload,{
+      headers: {
+        'Authorization': `Bearer ${this.context.adminUserAuthToken}`,
+      },
+    })
+    return res
+  }
 }

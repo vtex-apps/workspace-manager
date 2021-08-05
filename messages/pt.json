@@ -1,5 +1,14 @@
 {
   "admin.app.wsmanager.title": "Workspace Manager",
   "admin.app.wsmanager.subtitle": "Todas as ações realizadas não podem ser desfeitas, use esta ferramenta com responsabilidade.",
+  "admin.app.wsmanager.delete": "You are about to delete workspace",
+  "admin.app.wsmanager.form.label.disclaimer": "Please choose a name and type for the new workspace",
+  "admin.app.wsmanager.form.label.workspacePlaceHolder": "Testing new feature",
+  "admin.app.wsmanager.form.label.workspaceName": "Workspace Name",
+  "admin.app.wsmanager.form.label.workspaceType": "Workspace Type",
+  "admin.app.wsmanager.form.label.workspaceWeight": "Workspace Weight",
+  "admin.app.wsmanager.form.options.development": "Development",
+  "admin.app.wsmanager.form.options.production": "Production",
+  "admin.app.wsmanager.actions.save": "Save",
   "admin-wsmanager.navigation.label": "Workspace Manager"
 }
