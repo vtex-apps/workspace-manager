@@ -2,6 +2,8 @@
   "admin.app.wsmanager.title": "Workspace Manager",
   "admin.app.wsmanager.subtitle": "All performed actions can't be undone, use this tool with responsability.",
   "admin.app.wsmanager.delete": "You are about to delete workspace",
+  "admin.app.wsmanager.delete.success": "Your workspace has been deleted",
+  "admin.app.wsmanager.delete.deleteSame": " workspace can't be deleted, your currently working on it",
   "admin.app.wsmanager.form.label.disclaimer": "Please choose a name and type for the new workspace",
   "admin.app.wsmanager.form.label.workspacePlaceHolder": "Testing new feature",
   "admin.app.wsmanager.form.label.workspaceName": "Workspace Name",
@@ -10,6 +12,10 @@
   "admin.app.wsmanager.form.options.development": "Development",
   "admin.app.wsmanager.form.options.production": "Production",
   "admin.app.wsmanager.actions.save": "Save",
+  "admin.app.wsmanager.actions.delete": "Erase",
+  "admin.app.wsmanager.actions.workspaceCreated": "Workspace successfully created",
+  "admin.app.wsmanager.actions.workspaceCreationError": "Workspace was not created",
+  "admin.app.wsmanager.actions.workspaceCreationError.emptyName": "Name can't be empty.",
   "admin-example.hello-world": "",
   "appframe.navigation.example": ""
 }

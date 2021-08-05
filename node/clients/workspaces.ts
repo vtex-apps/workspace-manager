@@ -32,11 +32,11 @@ export default class Workspaces extends ExternalClient {
       name,
       production: isProduction
     }
-    const res = await this.http.post( `/${this.context.account}`,payload,{
+    const res = await this.http.postRaw( `/${this.context.account}`,payload,{
       headers: {
         'Authorization': `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
-    return res
+    return res.status
   }
 }

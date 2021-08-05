@@ -24,8 +24,7 @@ export async function deleteOneWorkspace(ctx: Context, next: () => Promise<any>)
     ctx.body = {status: 204, message: `Workspace ${name} has been deleted`};
   }
   else {
-    ctx.body = {message: `Error deleting workspace ${name}`};
-
+    ctx.body = {status: 403, message: `Error deleting workspace ${name}`};
   }
   // ctx.set('Cache-Control', headers['cache-control'])
 

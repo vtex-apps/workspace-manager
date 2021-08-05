@@ -9,10 +9,10 @@ export async function createWorkspace(ctx: Context, next: () => Promise<any>) {
   const { name, isProduction } = params
 
   // console.info('Received userId:', userId)
-  console.log('llego al middleware create', name);
+  console.log('llego al middleware create', name, isProduction);
   const allWorkspaces = await workspaceClient.createOne(name,isProduction)
 
-  // console.info('allWorkspaces:', allWorkspaces);
+  console.info('allWorkspaces create', allWorkspaces);
 
   // const {
   //   headers,
@@ -20,14 +20,9 @@ export async function createWorkspace(ctx: Context, next: () => Promise<any>) {
   //   status: responseStatus,
   // } = await statusClient.getStatusWithHeaders(code)
 
-  if (allWorkspaces.status === 201) {
-    ctx.body = {status: 204, message: `Workspace ${name} has been created`};
-  }
-  else {
-    ctx.body = {message: `Error creating workspace ${name}`};
-
+  if (allWorkspaces === 201) {
+    ctx.body = {status: 201, message: `Workspace ${name} has been created`};
   }
   // ctx.set('Cache-Control', headers['cache-control'])
-
   await next()
 }
