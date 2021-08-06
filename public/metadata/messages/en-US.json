@@ -1,0 +1,11 @@
+{
+  "name": "Workspace Manager",
+  "headline": "Manage your workspaces using VTEX Admin",
+  "overview": "Workspace Manger app enables the possibility to manage both production and development workspaces without the need of using Toolbelt CLI",
+  "features": ["Create Workspaces","Delete Workspaces"],
+  "websiteURL": "https://help.vtex.com/",
+  "support": {
+    "email": "help@vtex.com",
+    "url": "https://help.vtex.com/"
+  }
+}

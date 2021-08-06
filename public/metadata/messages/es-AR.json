@@ -1,0 +1,11 @@
+{
+  "name": "Administrador de workspaces",
+  "headline": "Administre sus workspaces usando VTEX Admin",
+  "overview": "La aplicación Workspace Manger permite la posibilidad de administrar los workspaces de producción y desarrollo sin la necesidad de utilizar Toolbelt CLI",
+  "features": ["Crear workspaces", "Eliminar workspaces"],
+  "websiteURL": "https://help.vtex.com/",
+  "support": {
+    "email": "help@vtex.com",
+    "url": "https://help.vtex.com/"
+  }
+}
