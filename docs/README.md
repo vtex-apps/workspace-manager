@@ -1,6 +1,6 @@
-# [ WORK IN PROGRESS ] Admin Example
+# Workspace Manager
 
-An example admin app that adds a menu button to the admin sidebar.
+This apps enables the possibility to manage workspaces using admin app.
 
 # PREVIEW NOTICE :construction:
 

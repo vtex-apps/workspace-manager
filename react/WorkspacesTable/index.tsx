@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import {
   Table,
   Tag,
@@ -6,14 +6,12 @@ import {
   Modal,
   Input,
   Dropdown,
-  Button
+  Button,
 } from 'vtex.styleguide'
-import {injectIntl, intlShape} from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl'
+import {RowHeader} from "../typings/workspaces";
 
-
-
-// @ts-ignore
-const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
+const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
   const [workspaceToDelete, setWorkspaceToDelete] = useState<String>('')
   const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
   const [newWorkspaceName, setNewWorkspaceName] = useState<String>('')
@@ -22,31 +20,53 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
   const [showCreationError, setShowCreationError] = useState<String>('')
   const [workspaceDeleteError, setWorkspaceDeleteError] = useState<String>('')
   const [deleteSuccess, setDeleteSuccess] = useState<Boolean>(false)
-  const currentStore = (window as any).__RUNTIME__.workspace
 
   const translations = {
-    selectProduction: intl.formatMessage({id: "admin.app.wsmanager.form.options.production"}),
-    selectDevelopment: intl.formatMessage({id: "admin.app.wsmanager.form.options.development"}),
-    delete: intl.formatMessage({id: "admin.app.wsmanager.delete"}),
-    deleteSuccess: intl.formatMessage({id: "admin.app.wsmanager.delete.success"}),
-    deleteSame: intl.formatMessage({id: "admin.app.wsmanager.delete.deleteSame"}),
-    disclaimer: intl.formatMessage({id: "admin.app.wsmanager.form.label.disclaimer"}),
-    workspacePlaceHolder: intl.formatMessage({id: "admin.app.wsmanager.form.label.workspacePlaceHolder"}),
-    workspaceName: intl.formatMessage({id: "admin.app.wsmanager.form.label.workspaceName"}),
-    workspaceType: intl.formatMessage({id: "admin.app.wsmanager.form.label.workspaceType"}),
-    workspaceWeight: intl.formatMessage({id: "admin.app.wsmanager.form.label.workspaceWeight"}),
-    save: intl.formatMessage({id: "admin.app.wsmanager.actions.save"}),
-    erase: intl.formatMessage({id: "admin.app.wsmanager.actions.delete"}),
-    workspaceCreated: intl.formatMessage({id: "admin.app.wsmanager.actions.workspaceCreated"}),
-    workspaceCreationError: intl.formatMessage({id: "admin.app.wsmanager.actions.workspaceCreationError"}),
-    errorEmptyName: intl.formatMessage({id: "admin.app.wsmanager.actions.workspaceCreationError.emptyName"})
-  };
-
+    selectProduction: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.options.production',
+    }),
+    selectDevelopment: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.options.development',
+    }),
+    delete: intl.formatMessage({ id: 'admin.app.wsmanager.delete' }),
+    deleteSuccess: intl.formatMessage({
+      id: 'admin.app.wsmanager.delete.success',
+    }),
+    deleteSame: intl.formatMessage({
+      id: 'admin.app.wsmanager.delete.deleteSame',
+    }),
+    disclaimer: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.label.disclaimer',
+    }),
+    workspacePlaceHolder: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.label.workspacePlaceHolder',
+    }),
+    workspaceName: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.label.workspaceName',
+    }),
+    workspaceType: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.label.workspaceType',
+    }),
+    workspaceWeight: intl.formatMessage({
+      id: 'admin.app.wsmanager.form.label.workspaceWeight',
+    }),
+    save: intl.formatMessage({ id: 'admin.app.wsmanager.actions.save' }),
+    erase: intl.formatMessage({ id: 'admin.app.wsmanager.actions.delete' }),
+    newWs: intl.formatMessage({ id: 'admin.app.wsmanager.actions.newWs' }),
+    workspaceCreated: intl.formatMessage({
+      id: 'admin.app.wsmanager.actions.workspaceCreated',
+    }),
+    workspaceCreationError: intl.formatMessage({
+      id: 'admin.app.wsmanager.actions.workspaceCreationError',
+    }),
+    errorEmptyName: intl.formatMessage({
+      id: 'admin.app.wsmanager.actions.workspaceCreationError.emptyName',
+    }),
+  }
   const selectOptions = [
-    {value: 'true', label: translations.selectProduction},
-    {value: 'false', label: translations.selectDevelopment}
+    { value: 'true', label: translations.selectProduction },
+    { value: 'false', label: translations.selectDevelopment },
   ]
-
   const defaultSchema = {
     properties: {
       name: {
@@ -54,59 +74,70 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
       },
       production: {
         title: translations.workspaceType,
-        cellRenderer: ({cellData}: { cellData: boolean }) => {
+        cellRenderer: ({ cellData }: { cellData: boolean }) => {
           return (
-            <Tag bgColor={cellData ? 'green' : 'blue'} color="#fff">
-              <span
-                className="nowrap">{cellData ? translations.selectProduction : translations.selectDevelopment}</span>
+            <Tag bgColor={cellData ? '#f71963' : '#134cd8'} color="#fff">
+              <span className="nowrap">
+                {cellData
+                  ? translations.selectProduction
+                  : translations.selectDevelopment}
+              </span>
             </Tag>
           )
         },
       },
       weight: {
-        title: translations.workspaceWeight
-      }
+        title: translations.workspaceWeight,
+      },
     },
   }
-
-  interface RowHeader {
-    rowData: { name: String }
-  }
-
   const lineActions = [
     {
-      label: ({rowData}: RowHeader) => `Borrar workspace ${rowData.name}`,
+      label: ({ rowData }: RowHeader) => `${translations.erase} Workspace ${rowData.name}`,
       isDangerous: true,
-      onClick: ({rowData}: RowHeader) =>
-        setWorkspaceToDelete(rowData.name)
+      onClick: ({ rowData }: RowHeader) => setWorkspaceToDelete(rowData.name),
     },
   ]
 
   const deleteWorkspace = (name: String) => {
-    if(name === currentStore) {
-      setWorkspaceDeleteError(translations.deleteSame)
-      setTimeout(() => clearAll(), 2000)
-      return false
-    }
-    fetch(`https://${window.location.hostname}/_v/workspaces/delete/${name}`,
-      {
-        credentials: 'include',
-        method: 'DELETE'
-      })
-      .then(response => response.json())
-      .then(json => {
-        console.log('json delete', json);
-        setWorkspaceToDelete('')
+    fetch(`https://${window.location.hostname}/_v/workspaces/delete/${name}`, {
+      credentials: 'include',
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((json) => {
         if (json?.status === 204) {
-          setWorkspaceDeleteError(translations.deleteSuccess);
+          setWorkspaceDeleteError(translations.deleteSuccess)
           setDeleteSuccess(true)
         } else {
           setWorkspaceDeleteError(`${json?.response?.data?.message}`)
         }
-        setTimeout(() => clearAll(), 1000)
+        setTimeout(() => clearAll(), 2000)
       })
   }
+  const createWorkspace = () => {
+    if (!newWorkspaceName) {
+      setShowCreationError(`${translations.errorEmptyName}`)
+      return false
+    }
 
+    fetch(
+      `https://${window.location.hostname}/_v/workspaces/${newWorkspaceName}/${newWorkspaceType}`,
+      {
+        credentials: 'include',
+        method: 'POST',
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.status === 201) {
+          setShowCreationAlert(true)
+          setTimeout(() => clearAll(), 2000)
+        } else {
+          setShowCreationError(`${json.response.data.message}.`)
+        }
+      })
+  }
   const clearAll = () => {
     setShowCreationError('')
     setShowCreationAlert(false)
@@ -118,57 +149,36 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
     setIsModalOpen(false)
     deleteCallback()
   }
-
-  const createWorkspace = () => {
-    if (!newWorkspaceName) {
-      setShowCreationError(`${translations.errorEmptyName}`)
-    }
-
-    fetch(`https://${window.location.hostname}/_v/workspaces/${newWorkspaceName}/${newWorkspaceType}`,
-      {
-        credentials: 'include',
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then(json => {
-        console.log('json', json);
-        if (json.status === 201) {
-          setShowCreationAlert(true)
-          setTimeout(() => clearAll(), 3000)
-        } else {
-          setShowCreationError(`${json.response.data.message}.`)
-        }
-      })
-
-  }
   const handleSelectChange = (value: String) => {
     setNewWorkspaceType(value)
   }
   const handleInputChange = (e: any) => {
-    setNewWorkspaceName(e);
+    setNewWorkspaceName(e)
     setShowCreationError('')
   }
 
   return (
     <div>
       <div className={'mv4'}>
-        {
-          (workspaceToDelete || workspaceDeleteError && !deleteSuccess) &&
+        {(workspaceToDelete || (workspaceDeleteError && !deleteSuccess)) && (
           <Alert
-            type={"error"}
-            action={{label: translations.erase, onClick: () => deleteWorkspace(workspaceToDelete)}}
-            onClose={() => clearAll()}>
-            {workspaceDeleteError ? '' : translations.delete} {workspaceToDelete} {workspaceDeleteError}.
+            type={'error'}
+            action={{
+              label: translations.erase,
+              onClick: () => deleteWorkspace(workspaceToDelete),
+            }}
+            onClose={() => clearAll()}
+          >
+            {workspaceDeleteError ? '' : translations.delete}{' '}
+            {workspaceToDelete} {workspaceDeleteError}.
           </Alert>
-        }
-        {
-          deleteSuccess &&
-          <Alert
-            type={"success"}
-            onClose={() => clearAll()}>
-            {workspaceDeleteError ? '' : translations.delete} {workspaceToDelete} {workspaceDeleteError}.
+        )}
+        {deleteSuccess && (
+          <Alert type={'success'} onClose={() => clearAll()}>
+            {workspaceDeleteError ? '' : translations.delete}{' '}
+            {workspaceToDelete} {workspaceDeleteError}.
           </Alert>
-        }
+        )}
       </div>
       <div className="mb5">
         <Table
@@ -178,32 +188,31 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
           lineActions={lineActions}
           toolbar={{
             newLine: {
-              label: 'New',
+              label: translations.newWs,
               handleCallback: () => setIsModalOpen(true),
             },
           }}
         />
-        <Modal
-          centered
-          isOpen={isModalOpen}
-          onClose={() => clearAll()}>
+        <Modal centered isOpen={isModalOpen} onClose={() => clearAll()}>
           <div className="dark-gray">
-            <p>
-              {translations.disclaimer}
-            </p>
+            <p>{translations.disclaimer}</p>
             <div
               style={{
                 display: 'flex',
-              }}>
+              }}
+            >
               <div
                 className={'pr4'}
                 style={{
-                  flex: '1 0 45%'
+                  flex: '1 0 45%',
                 }}
               >
                 <Input
                   placeholder={translations.workspacePlaceHolder}
-                  dataAttributes={{'hj-white-list': true, test: 'workspace-input'}}
+                  dataAttributes={{
+                    'hj-white-list': true,
+                    test: 'workspace-input',
+                  }}
                   label={translations.workspaceName}
                   type="text"
                   onChange={(e: any) => handleInputChange(e.target.value)}
@@ -212,7 +221,7 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
               <div
                 className={'pr4'}
                 style={{
-                  flex: '1 0 45%'
+                  flex: '1 0 45%',
                 }}
               >
                 <Dropdown
@@ -223,25 +232,20 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
                 />
               </div>
             </div>
-            <div className={"mv4"}>
+            <div className={'mv4'}>
               <Button variation="primary" onClick={() => createWorkspace()}>
                 {translations.save}
               </Button>
             </div>
-            {
-              showCreationAlert &&
-              <Alert
-                type="success">
-                {translations.workspaceCreated}.
+            {showCreationAlert && (
+              <Alert type="success">{translations.workspaceCreated}.</Alert>
+            )}
+            {showCreationError && (
+              <Alert type="error">
+                {showCreationError ?? `${showCreationError}`}{' '}
+                {translations.workspaceCreationError}.
               </Alert>
-            }
-            {
-              showCreationError &&
-              <Alert
-                type="error">
-                {showCreationError ?? `${showCreationError}`} {translations.workspaceCreationError}.
-              </Alert>
-            }
+            )}
           </div>
         </Modal>
       </div>
@@ -250,7 +254,7 @@ const WorkspaceAdmin = ({items, deleteCallback, intl}) => {
 }
 
 WorkspaceAdmin.propTypes = {
-  intl: intlShape.isRequired
+  intl: intlShape.isRequired,
 }
 
-export default injectIntl(WorkspaceAdmin);
+export default injectIntl(WorkspaceAdmin)

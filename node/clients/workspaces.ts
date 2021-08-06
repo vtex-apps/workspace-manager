@@ -3,38 +3,37 @@ import { ExternalClient } from '@vtex/api'
 
 export default class Workspaces extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
-    super('http://platform.io.vtex.com', context,
-      {
-        ...options,
-      })
+    super('http://platform.io.vtex.com', context, {
+      ...options,
+    })
   }
 
   public async getWorkspaces() {
-    const res = await this.http.getRaw( `/${this.context.account}`, {
+    const res = await this.http.getRaw(`/${this.context.account}`, {
       headers: {
-        'Authorization': `Bearer ${this.context.adminUserAuthToken}`,
+        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
     return res.data
   }
 
-  public async deleteOne(name : String | String[]) {
-    const res = await this.http.delete( `/${this.context.account}/${name}`, {
+  public async deleteOne(name: String | String[]) {
+    const res = await this.http.delete(`/${this.context.account}/${name}`, {
       headers: {
-        'Authorization': `Bearer ${this.context.adminUserAuthToken}`,
+        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
     return res
   }
 
-  public async createOne(name : String | String[], isProduction: Boolean) {
+  public async createOne(name: String | String[], isProduction: Boolean) {
     const payload = {
       name,
-      production: isProduction
+      production: isProduction,
     }
-    const res = await this.http.postRaw( `/${this.context.account}`,payload,{
+    const res = await this.http.postRaw(`/${this.context.account}`, payload, {
       headers: {
-        'Authorization': `Bearer ${this.context.adminUserAuthToken}`,
+        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
     return res.status

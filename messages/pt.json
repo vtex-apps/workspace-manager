@@ -13,6 +13,7 @@
   "admin.app.wsmanager.form.options.production": "Production",
   "admin.app.wsmanager.actions.save": "Salvar",
   "admin.app.wsmanager.actions.delete": "Apagar",
+  "admin.app.wsmanager.actions.newWs": "Novo",
   "admin.app.wsmanager.actions.workspaceCreated": "Workspace criado com sucesso",
   "admin.app.wsmanager.actions.workspaceCreationError": "Workspace não foi criado",
   "admin.app.wsmanager.actions.workspaceCreationError.emptyName": "O nome não pode estar vazio.",
