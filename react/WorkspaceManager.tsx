@@ -42,7 +42,7 @@ const WorkspaceManager: FC = () => {
         variation="full"
         subtitle={<FormattedMessage id="admin.app.wsmanager.subtitle" />}
       >
-        <WorkspacesTable items={workspaces} deleteCallback={getWorkspaces} />
+        <WorkspacesTable items={workspaces} callBack={getWorkspaces} />
       </PageBlock>
     </Layout>
   )

@@ -9,17 +9,21 @@ import {
   Button,
 } from 'vtex.styleguide'
 import { injectIntl, intlShape } from 'react-intl'
-import {RowHeader} from "../typings/workspaces";
+import { RowHeader } from "../typings/workspaces";
 
-const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
+const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
   const [workspaceToDelete, setWorkspaceToDelete] = useState<String>('')
+  const [workspaceToPromote, setWorkspaceToPromote] = useState<String>('')
   const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
   const [newWorkspaceName, setNewWorkspaceName] = useState<String>('')
   const [newWorkspaceType, setNewWorkspaceType] = useState<String>('false')
   const [showCreationAlert, setShowCreationAlert] = useState<Boolean>(false)
   const [showCreationError, setShowCreationError] = useState<String>('')
-  const [workspaceDeleteError, setWorkspaceDeleteError] = useState<String>('')
-  const [deleteSuccess, setDeleteSuccess] = useState<Boolean>(false)
+  const [state, setState] = useState({
+    action: "",
+    success: "",
+    error: ""
+  })
 
   const translations = {
     selectProduction: intl.formatMessage({
@@ -29,8 +33,13 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
       id: 'admin.app.wsmanager.form.options.development',
     }),
     delete: intl.formatMessage({ id: 'admin.app.wsmanager.delete' }),
+    promote: intl.formatMessage({ id: 'admin.app.wsmanager.promote' }),
+    action: intl.formatMessage({ id: 'admin.app.wsmanager.action' }),
     deleteSuccess: intl.formatMessage({
       id: 'admin.app.wsmanager.delete.success',
+    }),
+    promoteSuccess: intl.formatMessage({
+      id: 'admin.app.wsmanager.promote.success',
     }),
     deleteSame: intl.formatMessage({
       id: 'admin.app.wsmanager.delete.deleteSame',
@@ -52,6 +61,7 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
     }),
     save: intl.formatMessage({ id: 'admin.app.wsmanager.actions.save' }),
     erase: intl.formatMessage({ id: 'admin.app.wsmanager.actions.delete' }),
+    promoteAction: intl.formatMessage({ id: 'admin.app.wsmanager.actions.promote' }),
     newWs: intl.formatMessage({ id: 'admin.app.wsmanager.actions.newWs' }),
     workspaceCreated: intl.formatMessage({
       id: 'admin.app.wsmanager.actions.workspaceCreated',
@@ -63,6 +73,7 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
       id: 'admin.app.wsmanager.actions.workspaceCreationError.emptyName',
     }),
   }
+  
   const selectOptions = [
     { value: 'true', label: translations.selectProduction },
     { value: 'false', label: translations.selectDevelopment },
@@ -95,7 +106,18 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
     {
       label: ({ rowData }: RowHeader) => `${translations.erase} Workspace ${rowData.name}`,
       isDangerous: true,
-      onClick: ({ rowData }: RowHeader) => setWorkspaceToDelete(rowData.name),
+      onClick: ({ rowData }: RowHeader) => {
+        setState(prevState => ({ ...prevState, action: "delete", error: `${translations.delete} ${workspaceToPromote}` }))
+        setWorkspaceToDelete(rowData.name)
+      },
+    },
+    {
+      label: ({ rowData }: RowHeader) => `${translations.promoteAction} Workspace ${rowData.name}`,
+      isDangerous: true,
+      onClick: ({ rowData }: RowHeader) => {
+        setState(prevState => ({ ...prevState, action: "promote", error: `${translations.promote} ${workspaceToPromote}` }))
+        setWorkspaceToPromote(rowData.name)
+      },
     },
   ]
 
@@ -107,10 +129,9 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
       .then((response) => response.json())
       .then((json) => {
         if (json?.status === 204) {
-          setWorkspaceDeleteError(translations.deleteSuccess)
-          setDeleteSuccess(true)
+          setState(prevState => ({ ...prevState, success: translations.deleteSuccess }))
         } else {
-          setWorkspaceDeleteError(`${json?.response?.data?.message}`)
+          setState(prevState => ({ ...prevState, error: `${json?.response?.data?.message}` }))
         }
         setTimeout(() => clearAll(), 2000)
       })
@@ -136,18 +157,46 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
         } else {
           setShowCreationError(`${json.response.data.message}.`)
         }
+        setTimeout(() => clearAll(), 2000)
       })
   }
+
+  const promoteWorkspace = (workspace: String) => {
+    fetch(`https://${window.location.hostname}/_v/workspaces/promote/${workspace}`,
+      {
+        credentials: 'include',
+        method: 'PUT',
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        if (json?.status === 204) {
+          setState(prevState => ({ ...prevState, success: translations.promoteSuccess }))
+        } else {
+          setState(prevState => ({ ...prevState, error: `${json?.response?.data?.message}` }))
+        }
+        setTimeout(() => clearAll(), 2000)
+      })
+  }
+
   const clearAll = () => {
     setShowCreationError('')
     setShowCreationAlert(false)
     setNewWorkspaceName('')
     setNewWorkspaceType('false')
     setWorkspaceToDelete('')
-    setWorkspaceDeleteError('')
-    setDeleteSuccess(false)
+    // setWorkspaceDeleteError('')
+    // setDeleteSuccess(false)
+    setWorkspaceToPromote('')
+    // setWorkspacePromoteError('')
+    // setPromoteSuccess(false)
     setIsModalOpen(false)
-    deleteCallback()
+    callBack()
+    setState({
+      action: "",
+      error: "",
+      success: ""
+    })
   }
   const handleSelectChange = (value: String) => {
     setNewWorkspaceType(value)
@@ -160,7 +209,7 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
   return (
     <div>
       <div className={'mv4'}>
-        {(workspaceToDelete || (workspaceDeleteError && !deleteSuccess)) && (
+        {/*     {(workspaceToDelete || (state.error && state.success == "")) && (
           <Alert
             type={'error'}
             action={{
@@ -169,14 +218,32 @@ const WorkspaceAdmin = ({ items, deleteCallback, intl } : any) => {
             }}
             onClose={() => clearAll()}
           >
-            {workspaceDeleteError ? '' : translations.delete}{' '}
-            {workspaceToDelete} {workspaceDeleteError}.
+            {state.error ? state.error : `${translations.delete} ${workspaceToDelete} `}
+          </Alert>
+        )} */}
+        {state.error != "" && state.success == "" && (
+          <Alert
+            type={'error'}
+            action={{
+              label: translations.action,
+              onClick: state.action === "promote" ?
+                () => promoteWorkspace(workspaceToPromote) :
+                () => deleteWorkspace(workspaceToDelete),
+            }}
+            onClose={() => clearAll()}
+          >
+            {state.error ? state.error : `${translations.promote} ${workspaceToPromote} `}
           </Alert>
         )}
-        {deleteSuccess && (
+        {/*     {deleteSuccess && (
           <Alert type={'success'} onClose={() => clearAll()}>
             {workspaceDeleteError ? '' : translations.delete}{' '}
             {workspaceToDelete} {workspaceDeleteError}.
+          </Alert>
+        )} */}
+        {state.success !== "" && (
+          <Alert type={'success'} onClose={() => clearAll()}>
+            {state.success}
           </Alert>
         )}
       </div>
