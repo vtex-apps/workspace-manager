@@ -38,4 +38,16 @@ export default class Workspaces extends ExternalClient {
     })
     return res.status
   }
+
+  public async promote(workspace: String | String[]) {
+    const payload = {
+      workspace
+    }
+    const res = await this.http.putRaw(`/${this.context.account}/master/_promote`, payload, {
+      headers: {
+        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
+      },
+    })
+    return res.status
+  }
 }
