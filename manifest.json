@@ -1,7 +1,7 @@
 {
   "name": "workspace-manager",
   "vendor": "vtexarg",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "title": "Workspace Manager App",
   "description": "Created by VTEXARG Team",
   "mustUpdateAt": "2022-08-28",
