@@ -11,7 +11,7 @@ import {
 import { injectIntl, intlShape } from 'react-intl'
 import { RowHeader } from "../typings/workspaces";
 
-const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
+const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
   const [workspaceToDelete, setWorkspaceToDelete] = useState<String>('')
   const [workspaceToPromote, setWorkspaceToPromote] = useState<String>('')
   const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
@@ -73,7 +73,7 @@ const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
       id: 'admin.app.wsmanager.actions.workspaceCreationError.emptyName',
     }),
   }
-  
+
   const selectOptions = [
     { value: 'true', label: translations.selectProduction },
     { value: 'false', label: translations.selectDevelopment },
@@ -185,11 +185,7 @@ const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
     setNewWorkspaceName('')
     setNewWorkspaceType('false')
     setWorkspaceToDelete('')
-    // setWorkspaceDeleteError('')
-    // setDeleteSuccess(false)
     setWorkspaceToPromote('')
-    // setWorkspacePromoteError('')
-    // setPromoteSuccess(false)
     setIsModalOpen(false)
     callBack()
     setState({
@@ -209,18 +205,6 @@ const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
   return (
     <div>
       <div className={'mv4'}>
-        {/*     {(workspaceToDelete || (state.error && state.success == "")) && (
-          <Alert
-            type={'error'}
-            action={{
-              label: translations.erase,
-              onClick: () => deleteWorkspace(workspaceToDelete),
-            }}
-            onClose={() => clearAll()}
-          >
-            {state.error ? state.error : `${translations.delete} ${workspaceToDelete} `}
-          </Alert>
-        )} */}
         {state.error != "" && state.success == "" && (
           <Alert
             type={'error'}
@@ -235,12 +219,6 @@ const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
             {state.error ? state.error : `${translations.promote} ${workspaceToPromote} `}
           </Alert>
         )}
-        {/*     {deleteSuccess && (
-          <Alert type={'success'} onClose={() => clearAll()}>
-            {workspaceDeleteError ? '' : translations.delete}{' '}
-            {workspaceToDelete} {workspaceDeleteError}.
-          </Alert>
-        )} */}
         {state.success !== "" && (
           <Alert type={'success'} onClose={() => clearAll()}>
             {state.success}
@@ -249,6 +227,7 @@ const WorkspaceAdmin = ({ items, callBack, intl }: any) => {
       </div>
       <div className="mb5">
         <Table
+          loading={loading}
           fullWidth
           schema={defaultSchema}
           items={items}

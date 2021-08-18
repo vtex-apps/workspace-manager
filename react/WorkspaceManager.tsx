@@ -5,12 +5,13 @@ import { Layout, PageBlock, PageHeader } from 'vtex.styleguide'
 import WorkspacesTable from './WorkspacesTable'
 
 import './styles.global.css'
-import {Workspace} from "./typings/workspaces";
-import {makeid} from "./utils";
+import { Workspace } from "./typings/workspaces";
+import { makeid } from "./utils";
 
 
 
 const WorkspaceManager: FC = () => {
+  const [loading, setLoading] = useState(true)
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const currentWorkspace = (window as any).__RUNTIME__.workspace
 
@@ -22,6 +23,7 @@ const WorkspaceManager: FC = () => {
     })
       .then((response) => response.json())
       .then((json) => {
+        setLoading(false)
         setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace))
       })
   }
@@ -42,7 +44,7 @@ const WorkspaceManager: FC = () => {
         variation="full"
         subtitle={<FormattedMessage id="admin.app.wsmanager.subtitle" />}
       >
-        <WorkspacesTable items={workspaces} callBack={getWorkspaces} />
+        <WorkspacesTable loading={loading} items={workspaces} callBack={getWorkspaces} />
       </PageBlock>
     </Layout>
   )
