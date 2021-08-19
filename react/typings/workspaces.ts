@@ -4,5 +4,5 @@ export interface Workspace {
 }
 
 export interface RowHeader {
-  rowData: { name: String }
+  rowData: { name: string }
 }
