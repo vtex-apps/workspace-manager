@@ -25,7 +25,7 @@ const WorkspaceManager: FC = () => {
       .then((response) => response.json())
       .then((json) => {
         setLoading(false)
-        setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace))
+        setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
       })
   }
 
