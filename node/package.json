@@ -15,7 +15,7 @@
     "**/**/lodash": "^4.17.19"
   },
   "scripts": {
-    "lint": "tsc --noEmit --pretty && eslint -c .eslintrc.json --fix './**/*.ts'"
+    "lint": "tsc --noEmit --pretty"
   },
   "version": "0.7.2"
 }
