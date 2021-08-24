@@ -12,9 +12,6 @@ export const getAuthToken = (ctx: IOContext) => {
   return ctx.authToken
 }
 
-/**
- * Fixed rules ids
- */
 export const fixedRules = [
   1,
   1129,

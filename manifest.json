@@ -3,7 +3,7 @@
   "vendor": "vtexarg",
   "version": "0.1.4",
   "title": "Workspace Manager App",
-  "description": "Created by VTEXARG Team",
+  "description": "Admin app to create, delete and promote workspaces.",
   "mustUpdateAt": "2022-08-28",
   "scripts": {
     "postreleasy": "vtex publish"

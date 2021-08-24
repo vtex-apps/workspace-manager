@@ -13,8 +13,6 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import { RowHeader } from "../typings/workspaces";
 
 const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
-  // const [workspaceToDelete, setWorkspaceToDelete] = useState<String>('')
-  // const [workspaceToPromote, setWorkspaceToPromote] = useState<String>('')
   const [workspaceName, setWorkspaceName] = useState<String>('')
   const [modalOpen, setModalOpen] = useState({
     isOpen: false,
@@ -23,7 +21,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
   const [newWorkspaceName, setNewWorkspaceName] = useState<String>('')
   const [newWorkspaceType, setNewWorkspaceType] = useState<String>('false')
   const [showCreationAlert, setShowCreationAlert] = useState<Boolean>(false)
-  // const [showCreationError, setShowCreationError] = useState<String>('')
   const [state, setState] = useState({
     action: "",
     success: false,
@@ -114,7 +111,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       label: ({ rowData }: RowHeader) => `${translations.erase} Workspace ${rowData.name}`,
       isDangerous: true,
       onClick: ({ rowData }: RowHeader) => {
-        // clearAll()
         setModalOpen({
           isOpen: true,
           type: "delete"
@@ -127,7 +123,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       label: ({ rowData }: RowHeader) => `${translations.promoteAction} Workspace ${rowData.name}`,
       isDangerous: true,
       onClick: ({ rowData }: RowHeader) => {
-        // clearAll()
         setModalOpen({
           isOpen: true,
           type: "promote"
@@ -155,14 +150,12 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
           setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
         }
         callBack()
-        // setTimeout(() => clearAll(), 3000)
       })
   }
   const createWorkspace = () => {
 
     if (!newWorkspaceName) {
       setState(prevState => ({ ...prevState, action: "create", error: translations.errorEmptyName }))
-      // setShowCreationError(`${translations.errorEmptyName}`)
       return false
     }
 
@@ -183,13 +176,9 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
           clearAll()
           setShowCreationAlert(true)
           setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
-          // clearAll()
-          // setTimeout(() => clearAll(), 3000)
         } else {
           setState(prevState => ({ ...prevState, action: "create", error: true, errorMessage: json.response.data.message }))
-          // setShowCreationError(`${json.response.data.message}.`)
         }
-        // setTimeout(() => clearAll(), 2000)
       })
   }
 
@@ -212,18 +201,14 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         } else {
           setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
         }
-        // setTimeout(() => clearAll(), 2000)
       })
   }
 
   const clearAll = () => {
-    // setShowCreationError('')
     setShowCreationAlert(false)
     setNewWorkspaceName('')
     setNewWorkspaceType('false')
     setWorkspaceName("")
-    // setWorkspaceToDelete('')
-    // setWorkspaceToPromote('')
     setModalOpen({
       isOpen: false,
       type: ""
@@ -254,22 +239,14 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
   return (
     <div>
       <div className={'mv4'}>
-        {console.log("showCreationAlert", showCreationAlert)}
         {showCreationAlert && (
           <Alert onClose={() => clearAll()} type="success">{translations.workspaceCreated}.</Alert>
         )}
-        {console.log("state.action", state.action !== "")}
 
         {state.error ? (
           <>
             <Alert
               type={'error'}
-              /*  action={{
-                 label: translations.action,
-                 onClick: state.action === "promote" ?
-                   () => promoteWorkspace(workspaceName) :
-                   () => deleteWorkspace(workspaceName),
-               }} */
               onClose={() => clearAll()}
             >
               {state.error && state.errorMessage}
@@ -298,7 +275,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         />
         {modalOpen.isOpen && <ModalDialog
           centered
-          // loading={loading}
           confirmation={{
             label: translations.action,
             onClick: state.action === "promote" ?
@@ -320,7 +296,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
             </p>
           </div>
         </ModalDialog>}
-        {console.log(modalOpen)}
         <Modal centered isOpen={modalOpen.isOpen && modalOpen.type === "create"} onClose={() => clearAll()}>
           <div className="dark-gray">
             <p>{translations.disclaimer}</p>
@@ -367,12 +342,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
                 {translations.save}
               </Button>
             </div>
-            {/*  {showCreationError && (
-              <Alert type="error">
-                {showCreationError ?? `${showCreationError}`}{' '}
-                {translations.workspaceCreationError}.
-              </Alert>
-            )} */}
           </div>
         </Modal>
       </div>
