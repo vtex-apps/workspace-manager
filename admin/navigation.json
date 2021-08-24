@@ -1,5 +1,5 @@
 {
   "section": "other",
-  "titleId": "admin-wsmanager.navigation.label",
+  "titleId": "admin/admin-wsmanager.navigation.label",
   "path": "/admin/workspace-manager"
 }
