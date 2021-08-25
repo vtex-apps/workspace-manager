@@ -1,0 +1,9 @@
+query getWorkspacesQuery{
+  getWorkspaces{
+    status
+    data {
+      name,
+      production
+    }
+  }
+}

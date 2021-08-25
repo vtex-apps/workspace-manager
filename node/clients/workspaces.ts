@@ -14,7 +14,7 @@ export default class Workspaces extends ExternalClient {
         Authorization: `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
-    return res.data
+    return res
   }
 
   public async deleteOne(name: String | String[]) {

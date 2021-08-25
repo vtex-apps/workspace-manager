@@ -5,6 +5,8 @@ import { deleteOneWorkspace } from './middlewares/deleteOneWorkspace'
 import { createWorkspace } from './middlewares/createWorkspace'
 import { promoteWorkspace } from './middlewares/promoteWorkspace'
 import { Clients } from './clients'
+import { resolvers } from './resolvers'
+
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
 
 metrics.trackCache('status', memoryCache)
@@ -30,5 +32,8 @@ export default new Service<Clients, State, ParamsContext>({
     wspromote: method({
       PUT: [promoteWorkspace],
     }),
+  },
+  graphql: {
+    resolvers,
   },
 })

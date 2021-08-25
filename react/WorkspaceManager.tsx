@@ -1,12 +1,17 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { FC, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Layout, PageBlock, PageHeader } from 'vtex.styleguide'
+import { useQuery } from 'react-apollo'
 
 import WorkspacesTable from './WorkspacesTable'
 
 import './styles.global.css'
 import { Workspace } from "./typings/workspaces";
 import { makeid } from "./utils";
+import getWorkspaces from './graphql/getWorkspaces.gql'
 
 
 
@@ -15,22 +20,36 @@ const WorkspaceManager: FC = () => {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const currentWorkspace = (window as any).__RUNTIME__.workspace
 
-  const getWorkspaces = () => {
-    setLoading(true)
-    setWorkspaces([])
-    let random = makeid(5)
-    fetch(`https://${window.location.hostname}/_v/workspaces/${random}/true`, {
-      credentials: 'include',
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        setLoading(false)
-        setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
-      })
-  }
+  // const [getWorkspaceQuery, { loading: loadingGetWorkspace, error: errorGetWorkspace, data: dataGetWorkspace }] = useQuery(getWorkspaces)
+  // const getWorkspaceQuery = useQuery(getWorkspaces)
+  const { loading: loadingWorkspaces, error: errorWorkspaces, data: dataWorkspaces } = useQuery(getWorkspaces);
 
   useEffect(() => {
-    getWorkspaces()
+    if (dataWorkspaces) {
+      console.log("entro aca")
+      setWorkspaces(dataWorkspaces.getWorkspaces.data)
+      setLoading(false)
+
+    }
+  }, [dataWorkspaces])
+
+  console.log("workspaces", workspaces)
+  /*
+    const getWorkspaces = () => {
+      setLoading(true)
+      setWorkspaces([])
+      let random = makeid(5)
+      fetch(`https://${window.location.hostname}/_v/workspaces/${random}/true`, {
+        credentials: 'include',
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          setLoading(false)
+          setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
+        })
+    } */
+  useEffect(() => {
+    // getWorkspaces()
   }, [])
 
   return (

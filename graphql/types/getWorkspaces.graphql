@@ -1,0 +1,9 @@
+type DataGetWorkspaceResponse{
+  name: String
+  production: Boolean
+}
+
+type GetWorkspaceResponse{
+  status: Int
+  data: [DataGetWorkspaceResponse]
+}
