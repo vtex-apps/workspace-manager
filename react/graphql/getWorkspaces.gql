@@ -3,7 +3,8 @@ query getWorkspacesQuery{
     status
     data {
       name,
-      production
+      production,
+      weight
     }
   }
 }

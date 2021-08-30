@@ -22,14 +22,13 @@ const WorkspaceManager: FC = () => {
 
   // const [getWorkspaceQuery, { loading: loadingGetWorkspace, error: errorGetWorkspace, data: dataGetWorkspace }] = useQuery(getWorkspaces)
   // const getWorkspaceQuery = useQuery(getWorkspaces)
-  const { loading: loadingWorkspaces, error: errorWorkspaces, data: dataWorkspaces } = useQuery(getWorkspaces);
+  const { loading: loadingWorkspaces, error: errorWorkspaces, data: dataWorkspaces, refetch } = useQuery(getWorkspaces);
 
   useEffect(() => {
     if (dataWorkspaces) {
-      console.log("entro aca")
-      setWorkspaces(dataWorkspaces.getWorkspaces.data)
+      // shows only the workspaces that don't match with the current one and master (they are not deletable)
+      setWorkspaces(dataWorkspaces.getWorkspaces?.data?.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
       setLoading(false)
-
     }
   }, [dataWorkspaces])
 
@@ -64,7 +63,7 @@ const WorkspaceManager: FC = () => {
         variation="full"
         subtitle={<FormattedMessage id="admin/admin.app.wsmanager.subtitle" />}
       >
-        <WorkspacesTable loading={loading} items={workspaces} callBack={getWorkspaces} />
+        <WorkspacesTable loading={loading} items={workspaces} callBack={() => refetch()} />
       </PageBlock>
     </Layout>
   )

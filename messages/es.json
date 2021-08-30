@@ -21,5 +21,6 @@
   "admin/admin.app.wsmanager.actions.workspaceCreated": "Workspace creado exitosamente",
   "admin/admin.app.wsmanager.actions.workspaceCreationError": "El workspace no fue creado",
   "admin/admin.app.wsmanager.actions.workspaceCreationError.emptyName": "El nombre no puede estar vacío.",
+  "admin/admin.app.wsmanager.actions.workspaceCreationError.specialChars": "No es un nombre de workspace válido. Utilice solo letras y números en minúscula",
   "admin/admin-wsmanager.navigation.label": "Workspace Manager"
 }

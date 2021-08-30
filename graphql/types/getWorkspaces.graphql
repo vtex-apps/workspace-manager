@@ -1,6 +1,7 @@
 type DataGetWorkspaceResponse{
   name: String
-  production: Boolean
+  production: Boolean,
+  weight: String
 }
 
 type GetWorkspaceResponse{

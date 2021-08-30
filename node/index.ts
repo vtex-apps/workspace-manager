@@ -1,8 +1,8 @@
 import { LRUCache, method, Service, ParamsContext } from '@vtex/api'
 
-import { getAllWorkspaces } from './middlewares/getAllWorkspaces'
+// import { getAllWorkspaces } from './middlewares/getAllWorkspaces'
 import { deleteOneWorkspace } from './middlewares/deleteOneWorkspace'
-import { createWorkspace } from './middlewares/createWorkspace'
+// import { createWorkspace } from './middlewares/createWorkspace'
 import { promoteWorkspace } from './middlewares/promoteWorkspace'
 import { Clients } from './clients'
 import { resolvers } from './resolvers'
@@ -21,11 +21,11 @@ export default new Service<Clients, State, ParamsContext>({
       },
     },
   },
-  routes: {
+  routes: {/*
     workspaces: method({
       GET: [getAllWorkspaces],
       POST: [createWorkspace],
-    }),
+    }), */
     wsdelete: method({
       DELETE: [deleteOneWorkspace],
     }),

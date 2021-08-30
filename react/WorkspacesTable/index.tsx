@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Table,
   Tag,
@@ -9,8 +9,13 @@ import {
   Button,
   ModalDialog
 } from 'vtex.styleguide'
+import { useMutation, useQuery } from 'react-apollo'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
+
 import { RowHeader } from "../typings/workspaces";
+import createWorkspaceGQL from './../graphql/createWorkspace.gql';
+import { checkWorkspaceName } from "./../utils";
+
 
 const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
   const [workspaceName, setWorkspaceName] = useState<String>('')
@@ -18,7 +23,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     isOpen: false,
     type: ""
   })
-  const [newWorkspaceName, setNewWorkspaceName] = useState<String>('')
+  const [newWorkspaceName, setNewWorkspaceName] = useState<string>('')
   const [newWorkspaceType, setNewWorkspaceType] = useState<String>('false')
   const [showCreationAlert, setShowCreationAlert] = useState<Boolean>(false)
   const [state, setState] = useState({
@@ -28,6 +33,13 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     error: false,
     errorMessage: ""
   })
+  const [createWorkspace,
+    {
+      loading: loadingCreate,
+      error: errorCreate,
+      data: dataCreate,
+    }] = useMutation(createWorkspaceGQL)
+
 
   const translations: any = {
     selectProduction: intl.formatMessage({
@@ -75,6 +87,9 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }),
     errorEmptyName: intl.formatMessage({
       id: 'admin/admin.app.wsmanager.actions.workspaceCreationError.emptyName',
+    }),
+    errorWorkspaceCharacters: intl.formatMessage({
+      id: 'admin/admin.app.wsmanager.actions.workspaceCreationError.specialChars',
     }),
   }
 
@@ -152,14 +167,37 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         callBack()
       })
   }
-  const createWorkspace = () => {
 
+  useEffect(() => {
+    if (loadingCreate) setState(prevState => ({ ...prevState, isLoading: true }))
+    if (dataCreate) {
+      setModalOpen({
+        isOpen: false,
+        type: ""
+      })
+      clearAll()
+      setShowCreationAlert(true)
+      setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
+    }
+    if (errorCreate) console.log("errorCreate-----", errorCreate)
+  }, [errorCreate, dataCreate, loadingCreate])
+
+  const createWorkspaces = () => {
     if (!newWorkspaceName) {
       setState(prevState => ({ ...prevState, action: "create", error: translations.errorEmptyName }))
       return false
     }
+    const isValid = checkWorkspaceName(newWorkspaceName);
+    console.log("isValid", isValid)
+    if (isValid) {
+      createWorkspace({ variables: { name: newWorkspaceName, isProduction: newWorkspaceType } })
+    }
+    else {
+      setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
+    }
+    // createWorkspace({ variables: { name: newWorkspaceName, isProduction: newWorkspaceType } })
 
-    fetch(
+    /* fetch(
       `https://${window.location.hostname}/_v/workspaces/${newWorkspaceName}/${newWorkspaceType}`,
       {
         credentials: 'include',
@@ -179,7 +217,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         } else {
           setState(prevState => ({ ...prevState, action: "create", error: true, errorMessage: json.response.data.message }))
         }
-      })
+      }) */
   }
 
   const promoteWorkspace = (workspace: String) => {
@@ -242,7 +280,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         {showCreationAlert && (
           <Alert onClose={() => clearAll()} type="success">{translations.workspaceCreated}.</Alert>
         )}
-
         {state.error ? (
           <>
             <Alert
@@ -320,7 +357,10 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
                   errorMessage={state.errorMessage}
                   label={translations.workspaceName}
                   type="text"
-                  onChange={(e: any) => handleInputChange(e.target.value)}
+                  onChange={(e: any) => {
+                    handleInputChange(e.target.value)
+                    setState(prevState=>({...prevState, errorMessage: "", error: false}))
+                  }}
                 />
               </div>
               <div
@@ -338,7 +378,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
               </div>
             </div>
             <div className={'mv4'}>
-              <Button variation="primary" onClick={() => createWorkspace()}>
+              <Button variation="primary" onClick={() => createWorkspaces()}>
                 {translations.save}
               </Button>
             </div>

@@ -1,6 +1,5 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
-
 export default class Workspaces extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {
     super('http://platform.io.vtex.com', context, {
@@ -31,12 +30,20 @@ export default class Workspaces extends ExternalClient {
       name,
       production: isProduction,
     }
-    const res = await this.http.postRaw(`/${this.context.account}`, payload, {
-      headers: {
-        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
-      },
-    })
-    return res.status
+    console.log("payload--", payload)
+    try {
+      const res = await this.http.postRaw(`/${this.context.account}`, payload, {
+        headers: {
+          Authorization: `Bearer ${this.context.adminUserAuthToken}`,
+        },
+      })
+      console.log("res---", res)
+      return res.status
+    } catch (err) {
+      console.log("error---", err)
+      return err
+    }
+
   }
 
   public async promote(workspace: String | String[]) {

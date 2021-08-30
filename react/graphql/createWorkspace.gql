@@ -1,0 +1,3 @@
+mutation createWorkspace($name: String!, $isProduction: String!, $weight: String!){
+    createWorkspace(name: $name, isProduction: $isProduction, number: $number)
+}
