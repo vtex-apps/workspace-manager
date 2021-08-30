@@ -89,6 +89,12 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     errorWorkspaceCharacters: intl.formatMessage({
       id: 'admin/admin.app.wsmanager.actions.workspaceCreationError.specialChars',
     }),
+    linkAdmin: intl.formatMessage({
+      id: 'admin/admin.app.wsmanager.actions.linkAdmin',
+    }),
+    linkFront: intl.formatMessage({
+      id: 'admin/admin.app.wsmanager.actions.linkFront',
+    }),
   }
 
   const selectOptions = [
@@ -111,11 +117,11 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
               }}
               options={[
                 {
-                  label: "Ir al front",
+                  label: translations.linkFront,
                   onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com`)
                 },
                 {
-                  label: "Ir al admin",
+                  label: translations.linkAdmin,
                   onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com/admin`)
                 }
               ]}
