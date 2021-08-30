@@ -9,10 +9,6 @@
     "wsdelete": {
       "path": "/_v/workspaces/delete/:name",
       "public": true
-    },
-    "wspromote": {
-      "path": "/_v/workspaces/promote/:workspace",
-      "public": true
     }
   }
 }
