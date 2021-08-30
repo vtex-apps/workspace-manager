@@ -16,11 +16,12 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
 import { RowHeader } from "../typings/workspaces";
 import createWorkspaceGQL from './../graphql/createWorkspace.gql';
+import promoteWorkspaceGQL from './../graphql/promoteWorkspace.gql';
 import { checkWorkspaceName } from "./../utils";
 
 
 const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
-  const [workspaceName, setWorkspaceName] = useState<String>('')
+  const [workspaceName, setWorkspaceName] = useState<string>('')
   const [modalOpen, setModalOpen] = useState({
     isOpen: false,
     type: ""
@@ -41,6 +42,13 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       error: errorCreate,
       data: dataCreate,
     }] = useMutation(createWorkspaceGQL)
+
+  const [promoteWorkspace,
+    {
+      loading: loadingPromote,
+      error: errorPromote,
+      data: dataPromote,
+    }] = useMutation(promoteWorkspaceGQL)
 
   const translations: any = {
     selectProduction: intl.formatMessage({
@@ -210,6 +218,23 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }
   }, [errorCreate, dataCreate, loadingCreate])
 
+  useEffect(() => {
+    if (loadingPromote) setState(prevState => ({ ...prevState, isLoading: true }))
+    if (dataPromote) {
+      setModalOpen({
+        isOpen: false,
+        type: ""
+      })
+      clearAll()
+      setState(prevState => ({ ...prevState, action: "", success: translations.promoteSuccess }))
+    }
+    if (errorPromote) {
+      //TODO: VER CÓMO MANEJAR LOS ERRORES
+      console.log("errorPromote", errorPromote)
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.message }))
+    }
+  }, [errorPromote, dataPromote, loadingPromote])
+
   const createWorkspaces = () => {
     if (!newWorkspaceName) {
       setState(prevState => ({ ...prevState, action: "create", error: translations.errorEmptyName }))
@@ -224,26 +249,15 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }
   }
 
-  const promoteWorkspace = (workspace: String) => {
-    fetch(`https://${window.location.hostname}/_v/workspaces/promote/${workspace}`,
-      {
-        credentials: 'include',
-        method: 'PUT',
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setModalOpen({
-          isOpen: false,
-          type: ""
-        })
-        if (json?.status === 204) {
-          clearAll()
-          setState(prevState => ({ ...prevState, action: "", success: translations.promoteSuccess }))
-        } else {
-          setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
-        }
-      })
+  const promoteWorkspaces = (workspace: string) => {
+    const isValid = checkWorkspaceName(workspace);
+    console.log("isValid", isValid)
+    if (isValid) {
+      promoteWorkspace({ variables: { name: workspace} })
+    }
+    else {
+      setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
+    }
   }
 
   const clearAll = () => {
@@ -319,7 +333,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
           confirmation={{
             label: translations.action,
             onClick: state.action === "promote" ?
-              () => promoteWorkspace(workspaceName) :
+              () => promoteWorkspaces(workspaceName) :
               () => deleteWorkspace(workspaceName),
           }}
           cancelation={{

@@ -1,0 +1,3 @@
+mutation promoteWorkspace($name: String!){
+    promoteWorkspace(name: $name)
+}
