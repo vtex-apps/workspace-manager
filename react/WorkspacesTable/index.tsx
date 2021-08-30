@@ -7,9 +7,11 @@ import {
   Input,
   Dropdown,
   Button,
-  ModalDialog
+  ModalDialog,
+  ActionMenu,
+  IconExternalLink
 } from 'vtex.styleguide'
-import { useMutation, useQuery } from 'react-apollo'
+import { useMutation } from 'react-apollo'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
 import { RowHeader } from "../typings/workspaces";
@@ -39,7 +41,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       error: errorCreate,
       data: dataCreate,
     }] = useMutation(createWorkspaceGQL)
-
 
   const translations: any = {
     selectProduction: intl.formatMessage({
@@ -72,9 +73,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     workspaceType: intl.formatMessage({
       id: 'admin/admin.app.wsmanager.form.label.workspaceType',
     }),
-    workspaceWeight: intl.formatMessage({
-      id: 'admin/admin.app.wsmanager.form.label.workspaceWeight',
-    }),
     save: intl.formatMessage({ id: 'admin/admin.app.wsmanager.actions.save' }),
     erase: intl.formatMessage({ id: 'admin/admin.app.wsmanager.actions.delete' }),
     promoteAction: intl.formatMessage({ id: 'admin/admin.app.wsmanager.actions.promote' }),
@@ -101,6 +99,29 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     properties: {
       name: {
         title: translations.workspaceName,
+        cellRenderer: ({ cellData }: { cellData: boolean }) => {
+          return (
+            <ActionMenu
+              label={cellData}
+              hideCaretIcon
+              align="left"
+              buttonProps={{
+                icon: <IconExternalLink color="currentColor" />,
+                variation: 'tertiary',
+              }}
+              options={[
+                {
+                  label: "Ir al front",
+                  onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com`)
+                },
+                {
+                  label: "Ir al admin",
+                  onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com/admin`)
+                }
+              ]}
+            />
+          )
+        },
       },
       production: {
         title: translations.workspaceType,
@@ -115,10 +136,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
             </Tag>
           )
         },
-      },
-      weight: {
-        title: translations.workspaceWeight,
-      },
+      }
     },
   }
   const lineActions = [
@@ -145,7 +163,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
         setWorkspaceName(rowData.name)
         setState(prevState => ({ ...prevState, action: "promote", success: false, successMessage: "" }))
       },
-    },
+    }
   ]
 
   const deleteWorkspace = (name: String) => {
@@ -179,7 +197,11 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setShowCreationAlert(true)
       setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
     }
-    if (errorCreate) console.log("errorCreate-----", errorCreate)
+    if (errorCreate) {
+      //TODO: VER CÓMO MANEJAR LOS ERRORES
+      console.log("errorCreate", errorCreate)
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorCreate.message }))
+    }
   }, [errorCreate, dataCreate, loadingCreate])
 
   const createWorkspaces = () => {
@@ -188,36 +210,12 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       return false
     }
     const isValid = checkWorkspaceName(newWorkspaceName);
-    console.log("isValid", isValid)
     if (isValid) {
       createWorkspace({ variables: { name: newWorkspaceName, isProduction: newWorkspaceType } })
     }
     else {
       setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
     }
-    // createWorkspace({ variables: { name: newWorkspaceName, isProduction: newWorkspaceType } })
-
-    /* fetch(
-      `https://${window.location.hostname}/_v/workspaces/${newWorkspaceName}/${newWorkspaceType}`,
-      {
-        credentials: 'include',
-        method: 'POST',
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setModalOpen({
-          isOpen: false,
-          type: ""
-        })
-        if (json.status === 201) {
-          clearAll()
-          setShowCreationAlert(true)
-          setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
-        } else {
-          setState(prevState => ({ ...prevState, action: "create", error: true, errorMessage: json.response.data.message }))
-        }
-      }) */
   }
 
   const promoteWorkspace = (workspace: String) => {
@@ -359,7 +357,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
                   type="text"
                   onChange={(e: any) => {
                     handleInputChange(e.target.value)
-                    setState(prevState=>({...prevState, errorMessage: "", error: false}))
+                    setState(prevState => ({ ...prevState, errorMessage: "", error: false }))
                   }}
                 />
               </div>

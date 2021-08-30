@@ -12,9 +12,16 @@ export const mutations = {
     { name, isProduction }: any,
     ctx: Context
   ): Promise<any> => {
-    console.log("entro aca1")
-    const aux = await ctx.clients.workspace.createOne(name, isProduction)
-    console.log("response.-----", aux)
-    return "end";
+    return await ctx.clients.workspace.createOne(name, isProduction)
+  },
+  promoteWorkspace: async (
+    _: unknown,
+    { name }: any,
+    ctx: Context
+  ): Promise<any> => {
+    const res = await ctx.clients.workspace.promoteWorkspace(name)
+    console.log("res---", res)
+    return res
   },
 }
+

@@ -10,9 +10,7 @@ import WorkspacesTable from './WorkspacesTable'
 
 import './styles.global.css'
 import { Workspace } from "./typings/workspaces";
-import { makeid } from "./utils";
 import getWorkspaces from './graphql/getWorkspaces.gql'
-
 
 
 const WorkspaceManager: FC = () => {
@@ -20,36 +18,18 @@ const WorkspaceManager: FC = () => {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const currentWorkspace = (window as any).__RUNTIME__.workspace
 
-  // const [getWorkspaceQuery, { loading: loadingGetWorkspace, error: errorGetWorkspace, data: dataGetWorkspace }] = useQuery(getWorkspaces)
-  // const getWorkspaceQuery = useQuery(getWorkspaces)
   const { loading: loadingWorkspaces, error: errorWorkspaces, data: dataWorkspaces, refetch } = useQuery(getWorkspaces);
 
   useEffect(() => {
+    if (loadingWorkspaces) {
+      setLoading(true)
+    }
     if (dataWorkspaces) {
       // shows only the workspaces that don't match with the current one and master (they are not deletable)
       setWorkspaces(dataWorkspaces.getWorkspaces?.data?.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
       setLoading(false)
     }
-  }, [dataWorkspaces])
-
-  console.log("workspaces", workspaces)
-  /*
-    const getWorkspaces = () => {
-      setLoading(true)
-      setWorkspaces([])
-      let random = makeid(5)
-      fetch(`https://${window.location.hostname}/_v/workspaces/${random}/true`, {
-        credentials: 'include',
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          setLoading(false)
-          setWorkspaces(json.filter((i: any) => i.name !== currentWorkspace && i.name !== 'master'))
-        })
-    } */
-  useEffect(() => {
-    // getWorkspaces()
-  }, [])
+  }, [dataWorkspaces, loadingWorkspaces])
 
   return (
     <Layout

@@ -24,26 +24,22 @@ export default class Workspaces extends ExternalClient {
     })
     return res
   }
-
+  //TODO: VER CÓMO MANEJAR LOS ERRORES
   public async createOne(name: String | String[], isProduction: Boolean) {
     const payload = {
       name,
       production: isProduction,
     }
-    console.log("payload--", payload)
     try {
       const res = await this.http.postRaw(`/${this.context.account}`, payload, {
         headers: {
           Authorization: `Bearer ${this.context.adminUserAuthToken}`,
         },
       })
-      console.log("res---", res)
       return res.status
     } catch (err) {
-      console.log("error---", err)
       return err
     }
-
   }
 
   public async promote(workspace: String | String[]) {
