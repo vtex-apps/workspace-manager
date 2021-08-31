@@ -30,28 +30,21 @@ export default class Workspaces extends ExternalClient {
       name,
       production: isProduction,
     }
-    try {
-      const res = await this.http.postRaw(`/${this.context.account}`, payload, {
-        headers: {
-          Authorization: `Bearer ${this.context.adminUserAuthToken}`,
-        },
-      })
-      console.log("res----", res)
-      return res
-    } catch (err) {
-      return err
-    }
+    return await this.http.postRaw(`/${this.context.account}`, payload, {
+      headers: {
+        Authorization: `Bearer ${this.context.adminUserAuthToken}`,
+      },
+    })
   }
 
   public async promote(workspace: String | String[]) {
     const payload = {
       workspace
     }
-    const res = await this.http.putRaw(`/${this.context.account}/master/_promote`, payload, {
+    return await this.http.putRaw(`/${this.context.account}/master/_promote`, payload, {
       headers: {
         Authorization: `Bearer ${this.context.adminUserAuthToken}`,
       },
     })
-    return res.status
   }
 }

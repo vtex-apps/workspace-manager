@@ -1,3 +1,5 @@
 mutation createWorkspace($name: String!, $isProduction: String!){
-    createWorkspace(name: $name, isProduction: $isProduction)
+    createWorkspace(name: $name, isProduction: $isProduction){
+      status, statusText
+    }
 }

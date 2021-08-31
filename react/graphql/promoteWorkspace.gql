@@ -1,3 +1,5 @@
 mutation promoteWorkspace($name: String!){
-    promoteWorkspace(name: $name)
+    promoteWorkspace(name: $name){
+    status, statusText
+  }
 }
