@@ -1,0 +1,5 @@
+mutation deleteWorkspace($name: String!){
+    deleteWorkspace(name: $name){
+    status, statusText
+  }
+}

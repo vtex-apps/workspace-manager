@@ -21,5 +21,12 @@ export const mutations = {
   ): Promise<any> => {
     return await ctx.clients.workspace.promote(name)
   },
+  deleteWorkspace: async (
+    _: unknown,
+    { name }: any,
+    ctx: Context
+  ): Promise<any> => {
+    return await ctx.clients.workspace.deleteOne(name)
+  },
 }
 

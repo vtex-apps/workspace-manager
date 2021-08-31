@@ -7,4 +7,6 @@ type Mutation {
   createWorkspace(name: String!, isProduction: String!): WorkspaceCreateResponse
   "promote a workspace"
   promoteWorkspace(name: String!): WorkspacePromoteResponse
+  "delete a workspace"
+  deleteWorkspace(name: String!): WorkspaceDeleteResponse
 }

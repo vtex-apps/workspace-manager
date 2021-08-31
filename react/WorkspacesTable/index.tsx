@@ -17,6 +17,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import { RowHeader } from "../typings/workspaces";
 import createWorkspaceGQL from './../graphql/createWorkspace.gql';
 import promoteWorkspaceGQL from './../graphql/promoteWorkspace.gql';
+import deleteWorkspaceGQL from './../graphql/deleteWorkspace.gql';
 import { checkWorkspaceName } from "./../utils";
 
 
@@ -36,6 +37,8 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     error: false,
     errorMessage: ""
   })
+
+  //MUTATIONS
   const [createWorkspace,
     {
       loading: loadingCreate,
@@ -49,6 +52,13 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       error: errorPromote,
       data: dataPromote,
     }] = useMutation(promoteWorkspaceGQL)
+
+  const [deleteWorkspace,
+    {
+      loading: loadingDelete,
+      error: errorDelete,
+      data: dataDelete,
+    }] = useMutation(deleteWorkspaceGQL)
 
   const translations: any = {
     selectProduction: intl.formatMessage({
@@ -180,26 +190,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }
   ]
 
-  const deleteWorkspace = (name: String) => {
-    fetch(`https://${window.location.hostname}/_v/workspaces/delete/${name}`, {
-      credentials: 'include',
-      method: 'DELETE',
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        setModalOpen({
-          isOpen: false,
-          type: ""
-        })
-        if (json?.status === 204) {
-          setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
-        } else {
-          setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
-        }
-        callBack()
-      })
-  }
-
   useEffect(() => {
     if (loadingCreate) setState(prevState => ({ ...prevState, isLoading: true }))
     if (dataCreate) {
@@ -235,6 +225,19 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }
   }, [errorPromote, dataPromote, loadingPromote])
 
+  useEffect(() => {
+    if (loadingDelete) setState(prevState => ({ ...prevState, isLoading: true }))
+    if (dataDelete) {
+      clearAll()
+      setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
+    }
+    if (errorDelete) {
+      //TODO: VER CÓMO MANEJAR LOS ERRORES
+      console.log("errorDelete", errorDelete)
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorDelete.message }))
+    }
+  }, [errorDelete, dataDelete, loadingDelete])
+
   const createWorkspaces = () => {
     if (!newWorkspaceName) {
       setState(prevState => ({ ...prevState, action: "create", error: translations.errorEmptyName }))
@@ -249,15 +252,50 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     }
   }
 
-  const promoteWorkspaces = (workspace: string) => {
-    const isValid = checkWorkspaceName(workspace);
+  const promoteWorkspaces = (name: string) => {
+    const isValid = checkWorkspaceName(name);
     console.log("isValid", isValid)
+    setModalOpen({
+      isOpen: false,
+      type: ""
+    })
     if (isValid) {
-      promoteWorkspace({ variables: { name: workspace} })
+      promoteWorkspace({ variables: { name: name } })
     }
     else {
       setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
     }
+  }
+
+  const deleteWorkspaces = (name: string) => {
+    const isValid = checkWorkspaceName(name);
+    setModalOpen({
+      isOpen: false,
+      type: ""
+    })
+    if (isValid) {
+      deleteWorkspace({ variables: { name: name } })
+    }
+    else {
+      setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
+    }
+    /*  fetch(`https://${window.location.hostname}/_v/workspaces/delete/${name}`, {
+       credentials: 'include',
+       method: 'DELETE',
+     })
+       .then((response) => response.json())
+       .then((json) => {
+         setModalOpen({
+           isOpen: false,
+           type: ""
+         })
+         if (json?.status === 204) {
+           setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
+         } else {
+           setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
+         }
+         callBack()
+       }) */
   }
 
   const clearAll = () => {
@@ -334,7 +372,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
             label: translations.action,
             onClick: state.action === "promote" ?
               () => promoteWorkspaces(workspaceName) :
-              () => deleteWorkspace(workspaceName),
+              () => deleteWorkspaces(workspaceName),
           }}
           cancelation={{
             onClick: () => clearAll(),

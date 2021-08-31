@@ -1,6 +1,5 @@
-import { LRUCache, method, Service, ParamsContext } from '@vtex/api'
+import { LRUCache, Service, ParamsContext } from '@vtex/api'
 
-import { deleteOneWorkspace } from './middlewares/deleteOneWorkspace'
 import { Clients } from './clients'
 import { resolvers } from './resolvers'
 
@@ -17,11 +16,6 @@ export default new Service<Clients, State, ParamsContext>({
         timeout: 10000,
       },
     },
-  },
-  routes: {
-    wsdelete: method({
-      DELETE: [deleteOneWorkspace],
-    })
   },
   graphql: {
     resolvers,

@@ -4,11 +4,5 @@
   "timeout": 5,
   "minReplicas": 2,
   "maxReplicas": 4,
-  "workers": 1,
-  "routes": {
-    "wsdelete": {
-      "path": "/_v/workspaces/delete/:name",
-      "public": true
-    }
-  }
+  "workers": 1
 }
