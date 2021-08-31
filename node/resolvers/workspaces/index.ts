@@ -19,9 +19,7 @@ export const mutations = {
     { name }: any,
     ctx: Context
   ): Promise<any> => {
-    const res = await ctx.clients.workspace.promote(name)
-    console.log("res---", res)
-    return res
+    return await ctx.clients.workspace.promote(name)
   },
 }
 

@@ -1,0 +1,4 @@
+type WorkspaceCreateResponse{
+  status: String,
+  statusText: String
+}

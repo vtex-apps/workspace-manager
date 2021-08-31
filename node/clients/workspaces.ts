@@ -36,7 +36,8 @@ export default class Workspaces extends ExternalClient {
           Authorization: `Bearer ${this.context.adminUserAuthToken}`,
         },
       })
-      return res.status
+      console.log("res----", res)
+      return res
     } catch (err) {
       return err
     }

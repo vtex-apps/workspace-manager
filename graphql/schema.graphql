@@ -4,7 +4,7 @@ type Query {
 
 type Mutation {
   "create a workspace"
-  createWorkspace(name: String!, isProduction: String!): String
+  createWorkspace(name: String!, isProduction: String!): WorkspaceCreateResponse
   "promote a workspace"
-  promoteWorkspace(name: String!): String
+  promoteWorkspace(name: String!): WorkspacePromoteResponse
 }

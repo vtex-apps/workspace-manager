@@ -1,0 +1,4 @@
+type WorkspacePromoteResponse{
+  status: String,
+  statusText: String
+}
