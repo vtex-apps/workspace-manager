@@ -6,4 +6,12 @@ declare global {
   interface State extends RecorderState {
     code: number
   }
+
+  interface WorkspaceMetadata {
+    name: string;
+    weight: number;
+    production: boolean;
+  }
 }
+
+

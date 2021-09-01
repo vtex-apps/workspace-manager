@@ -8,3 +8,9 @@ type GetWorkspaceResponse{
   status: Int
   data: [DataGetWorkspaceResponse]
 }
+
+type WorkspaceMetadata {
+    name: String
+    weight: String
+    production: Boolean
+}

@@ -1,5 +1,6 @@
 type Query {
   getWorkspaces: GetWorkspaceResponse
+  getWorkspaces2: [WorkspaceMetadata]
 }
 
 type Mutation {
