@@ -19,7 +19,5 @@
   "admin/admin.app.wsmanager.actions.newWs": "New",
   "admin/admin.app.wsmanager.actions.workspaceCreated": "Workspace successfully created",
   "admin/admin.app.wsmanager.actions.workspaceCreationError": "Workspace was not created",
-  "admin/admin.app.wsmanager.actions.workspaceCreationError.emptyName": "Name can't be empty.",
-  "admin-example.hello-world": "",
-  "appframe.navigation.example": ""
+  "admin/admin.app.wsmanager.actions.workspaceCreationError.emptyName": "Name can't be empty."
 }

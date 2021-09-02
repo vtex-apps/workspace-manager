@@ -38,7 +38,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     errorMessage: ""
   })
 
-  //MUTATIONS
   const [createWorkspace,
     {
       loading: loadingCreate,
@@ -119,6 +118,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     { value: 'true', label: translations.selectProduction },
     { value: 'false', label: translations.selectDevelopment },
   ]
+
   const defaultSchema = {
     properties: {
       name: {
@@ -163,6 +163,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       }
     },
   }
+
   const lineActions = [
     {
       label: ({ rowData }: RowHeader) => `${translations.erase} Workspace ${rowData.name}`,
@@ -202,9 +203,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
     }
     if (errorCreate) {
-      //TODO: VER CÓMO MANEJAR LOS ERRORES
-      console.log("errorCreate", errorCreate)
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorCreate.message }))
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorCreate, dataCreate, loadingCreate])
 
@@ -219,9 +218,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, action: "", success: translations.promoteSuccess }))
     }
     if (errorPromote) {
-      //TODO: VER CÓMO MANEJAR LOS ERRORES
-      console.log("errorPromote", errorPromote)
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.message }))
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorPromote, dataPromote, loadingPromote])
 
@@ -232,9 +229,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
     }
     if (errorDelete) {
-      //TODO: VER CÓMO MANEJAR LOS ERRORES
-      console.log("errorDelete", errorDelete)
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorDelete.message }))
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorDelete, dataDelete, loadingDelete])
 
@@ -254,7 +249,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
 
   const promoteWorkspaces = (name: string) => {
     const isValid = checkWorkspaceName(name);
-    console.log("isValid", isValid)
     setModalOpen({
       isOpen: false,
       type: ""
@@ -279,23 +273,6 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     else {
       setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
     }
-    /*  fetch(`https://${window.location.hostname}/_v/workspaces/delete/${name}`, {
-       credentials: 'include',
-       method: 'DELETE',
-     })
-       .then((response) => response.json())
-       .then((json) => {
-         setModalOpen({
-           isOpen: false,
-           type: ""
-         })
-         if (json?.status === 204) {
-           setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
-         } else {
-           setState(prevState => ({ ...prevState, action: "", error: true, errorMessage: `${json?.response?.data?.message}` }))
-         }
-         callBack()
-       }) */
   }
 
   const clearAll = () => {
@@ -316,9 +293,11 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       errorMessage: ""
     })
   }
+
   const handleSelectChange = (value: String) => {
     setNewWorkspaceType(value)
   }
+
   const handleInputChange = (e: any) => {
     setNewWorkspaceName(e)
   }
@@ -330,6 +309,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       type: "create"
     })
   }
+
   return (
     <div>
       <div className={'mv4'}>
