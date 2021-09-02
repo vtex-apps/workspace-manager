@@ -35,7 +35,8 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     success: false,
     successMessage: "",
     error: false,
-    errorMessage: ""
+    errorMessage: "",
+    errorCreate: ""
   })
 
   const [createWorkspace,
@@ -203,7 +204,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
     }
     if (errorCreate) {
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorCreate.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
+      setState(prevState => ({ ...prevState, errorCreate: errorCreate.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorCreate, dataCreate, loadingCreate])
 
@@ -290,7 +291,8 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       error: false,
       success: false,
       successMessage: "",
-      errorMessage: ""
+      errorMessage: "",
+      errorCreate: ""
     })
   }
 
@@ -310,13 +312,14 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     })
   }
 
+
   return (
     <div>
       <div className={'mv4'}>
         {showCreationAlert && (
           <Alert onClose={() => clearAll()} type="success">{translations.workspaceCreated}.</Alert>
         )}
-        {state.error ? (
+        {state.error && (
           <>
             <Alert
               type={'error'}
@@ -325,7 +328,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
               {state.error && state.errorMessage}
             </Alert>
           </>
-        ) : null}
+        )}
         {state.success && (
           <Alert type={'success'} onClose={() => clearAll()}>
             {state.success}
@@ -350,6 +353,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
           centered
           confirmation={{
             label: translations.action,
+            isDangerous: state.action === 'promote' || state.action === 'delete',
             onClick: state.action === "promote" ?
               () => promoteWorkspaces(workspaceName) :
               () => deleteWorkspaces(workspaceName),
@@ -389,8 +393,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
                     'hj-white-list': true,
                     test: 'workspace-input',
                   }}
-                  error={state.action === "create" && state.error}
-                  errorMessage={state.errorMessage}
+                  errorMessage={state.errorCreate}
                   label={translations.workspaceName}
                   type="text"
                   onChange={(e: any) => {

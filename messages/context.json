@@ -7,7 +7,7 @@
   "admin/admin.app.wsmanager.promote.success": "Your workspace has been promoted",
   "admin/admin.app.wsmanager.delete.deleteSame": " workspace can't be deleted, your currently working on it",
   "admin/admin.app.wsmanager.form.label.disclaimer": "Please choose a name and type for the new workspace",
-  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "Testing new feature",
+  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "Workspace Name",
   "admin/admin.app.wsmanager.form.label.workspaceName": "Workspace Name",
   "admin/admin.app.wsmanager.form.label.workspaceType": "Workspace Type",
   "admin/admin.app.wsmanager.form.label.workspaceWeight": "Workspace Weight",

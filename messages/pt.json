@@ -6,7 +6,7 @@
   "admin/admin.app.wsmanager.promote.success": "Seu workspace foi excluído",
   "admin/admin.app.wsmanager.delete.deleteSame": " workspace não pode ser excluído, você está trabalhando nele",
   "admin/admin.app.wsmanager.form.label.disclaimer": "Escolha um nome e tipo para o novo espaço de trabalho",
-  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "workspaceNome",
+  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "Nome Workspace",
   "admin/admin.app.wsmanager.action": "Confirme",
   "admin/admin.app.wsmanager.form.label.workspaceName": "Nome Workspace",
   "admin/admin.app.wsmanager.form.label.workspaceType": "Modelo Workspace",

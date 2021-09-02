@@ -8,7 +8,7 @@
   "admin/admin.app.wsmanager.action": "Confirmar",
   "admin/admin.app.wsmanager.delete.deleteSame": " workspace no puede ser borrado, estas trabajando en él",
   "admin/admin.app.wsmanager.form.label.disclaimer": "Elija un nombre y tipo para el nuevo espacio de trabajo",
-  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "workspaceNombre",
+  "admin/admin.app.wsmanager.form.label.workspacePlaceHolder": "Nombre del workspace",
   "admin/admin.app.wsmanager.form.label.workspaceName": "Nombre Workspace",
   "admin/admin.app.wsmanager.form.label.workspaceType": "Tipo Workspace",
   "admin/admin.app.wsmanager.form.label.workspaceWeight": "Peso Workspace",
