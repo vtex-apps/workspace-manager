@@ -1,7 +1,7 @@
 {
   "name": "workspace-manager",
   "vendor": "vtexarg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "title": "Workspace Manager App",
   "description": "Admin app to create, delete and promote workspaces.",
   "mustUpdateAt": "2022-08-28",
