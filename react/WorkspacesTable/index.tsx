@@ -203,7 +203,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, error: false, errorMessage: "" }))
     }
     if (errorCreate) {
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorCreate.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorCreate, dataCreate, loadingCreate])
 
@@ -229,7 +229,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       setState(prevState => ({ ...prevState, action: "", success: translations.deleteSuccess }))
     }
     if (errorDelete) {
-      setState(prevState => ({ ...prevState, error: true, errorMessage: errorPromote.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
+      setState(prevState => ({ ...prevState, error: true, errorMessage: errorDelete.graphQLErrors[0].extensions?.exception?.response?.data?.message }))
     }
   }, [errorDelete, dataDelete, loadingDelete])
 
