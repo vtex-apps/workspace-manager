@@ -1,4 +1,4 @@
-import type { InstanceOptions, IOContext } from '@vtex/api'
+import { InstanceOptions, IOContext } from '@vtex/api'
 import { ExternalClient } from '@vtex/api'
 export default class Workspaces extends ExternalClient {
   constructor(context: IOContext, options?: InstanceOptions) {

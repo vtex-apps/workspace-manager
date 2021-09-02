@@ -21,7 +21,6 @@
   "admin/admin.app.wsmanager.actions.workspaceCreationError": "Workspace não foi criado",
   "admin/admin.app.wsmanager.actions.workspaceCreationError.emptyName": "O nome não pode estar vazio.",
   "admin/admin.app.wsmanager.actions.workspaceCreationError.specialChars": "That's not a valid workspace name. Please use only lowercase letters and numbers",
-  "admin / admin.app.wsmanager.actions.workspaceCreationError.specialChars": "Esse não é um nome de espaço de trabalho válido. Use apenas letras minúsculas e números",
   "admin/admin-wsmanager.navigation.label": "Workspace Manager",
   "admin/admin.app.wsmanager.actions.linkFront": "Ir para Front",
   "admin/admin.app.wsmanager.actions.linkAdmin": "Ir para Admin"
