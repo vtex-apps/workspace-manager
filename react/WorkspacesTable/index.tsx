@@ -13,6 +13,7 @@ import {
 } from 'vtex.styleguide'
 import { useMutation } from 'react-apollo'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { RowHeader } from "../typings/workspaces";
 import createWorkspaceGQL from './../graphql/createWorkspace.gql';
@@ -38,6 +39,8 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
     errorMessage: "",
     errorCreate: ""
   })
+
+  const { account } = useRuntime()
 
   const [createWorkspace,
     {
@@ -137,11 +140,11 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
               options={[
                 {
                   label: translations.linkFront,
-                  onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com`)
+                  onClick: () => window.open(`https://${cellData}--${account}.myvtex.com`)
                 },
                 {
                   label: translations.linkAdmin,
-                  onClick: () => window.open(`https://${cellData}--tmehdi.myvtex.com/admin`)
+                  onClick: () => window.open(`https://${cellData}--${account}.myvtex.com/admin`)
                 }
               ]}
             />
