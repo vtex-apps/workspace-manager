@@ -247,7 +247,7 @@ const WorkspaceAdmin = ({ items, callBack, intl, loading }: any) => {
       createWorkspace({ variables: { name: newWorkspaceName, isProduction: newWorkspaceType } })
     }
     else {
-      setState(prevState => ({ ...prevState, error: true, errorMessage: translations.errorWorkspaceCharacters }))
+      setState(prevState => ({ ...prevState, errorCreate: translations.errorWorkspaceCharacters }))
     }
   }
 
