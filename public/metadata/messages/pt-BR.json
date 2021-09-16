@@ -1,7 +1,7 @@
 {
   "name": "Workspace Manager",
-  "headline": "Gerencie seus workspaces usando VTEX Admin",
-  "overview": "O aplicativo Workspace Manager permite a possibilidade de gerenciar os workspaces de produção e desenvolvimento sem a necessidade de usar o Toolbelt CLI",
+  "headline": "Gerencie seus workspaces usando VTEX Admin.",
+  "overview": "O aplicativo Workspace Manager permite a possibilidade de gerenciar os workspaces de produção e desenvolvimento sem a necessidade de usar o Toolbelt CLI.",
   "features": ["Criar Workspaces", "Deletar Workspaces"],
   "websiteURL": "https://help.vtex.com/",
   "support": {
